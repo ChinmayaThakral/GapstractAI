@@ -15,6 +15,8 @@ dist/
 .env.development.local
 .env.test.local
 .env.production.local
+.env.backup
+.env.template
 
 # IDE and editor files
 .vscode/
@@ -123,6 +125,16 @@ prisma/migrations/
 # Testing
 coverage/
 .nyc_output/
+
+# Security and certificates
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+*.secret
+secrets/
+config/secrets/
 
 # Misc
 *.tsbuildinfo
