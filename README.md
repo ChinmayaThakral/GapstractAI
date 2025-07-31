@@ -75,7 +75,7 @@ GapstractAI is a comprehensive research gap analysis platform that helps researc
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/gapstractai.git
+   git clone https://github.com/chinmayathakral/gapstractai.git
    cd gapstractai
    ```
 
@@ -267,9 +267,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🆘 Support
 
-- **Documentation**: [Wiki](https://github.com/your-username/gapstractai/wiki)
-- **Issues**: [GitHub Issues](https://github.com/your-username/gapstractai/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-username/gapstractai/discussions)
+- **Documentation**: [Wiki](https://github.com/chinmayathakral/gapstractai/wiki)
+- **Issues**: [GitHub Issues](https://github.com/chinmayathakral/gapstractai/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/chinmayathakral/gapstractai/discussions)
 
 ## 🙏 Acknowledgments
 

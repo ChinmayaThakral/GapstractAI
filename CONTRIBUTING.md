@@ -6,7 +6,7 @@ Thank you for your interest in contributing to GapstractAI! This document provid
 
 ### Reporting Bugs
 
-- Use the [GitHub issue tracker](https://github.com/your-username/gapstractai/issues)
+- Use the [GitHub issue tracker](https://github.com/chinmayathakral/gapstractai/issues)
 - Include a clear and descriptive title
 - Provide steps to reproduce the bug
 - Include screenshots if applicable
@@ -14,7 +14,7 @@ Thank you for your interest in contributing to GapstractAI! This document provid
 
 ### Suggesting Enhancements
 
-- Use the [GitHub issue tracker](https://github.com/your-username/gapstractai/issues)
+- Use the [GitHub issue tracker](https://github.com/chinmayathakral/gapstractai/issues)
 - Clearly describe the feature you'd like to see
 - Explain why this feature would be useful
 - Include mockups or examples if possible
@@ -91,7 +91,7 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 
 1. **Clone your fork**
    ```bash
-   git clone https://github.com/your-username/gapstractai.git
+   git clone https://github.com/chinmayathakral/gapstractai.git
    cd gapstractai
    ```
 
@@ -144,15 +144,15 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 
 ## 📚 Resources
 
-- [Project Documentation](https://github.com/your-username/gapstractai/wiki)
-- [API Documentation](https://github.com/your-username/gapstractai/wiki/API)
-- [Architecture Guide](https://github.com/your-username/gapstractai/wiki/Architecture)
+- [Project Documentation](https://github.com/chinmayathakral/gapstractai/wiki)
+- [API Documentation](https://github.com/chinmayathakral/gapstractai/wiki/API)
+- [Architecture Guide](https://github.com/chinmayathakral/gapstractai/wiki/Architecture)
 
 ## 🆘 Getting Help
 
-- [GitHub Issues](https://github.com/your-username/gapstractai/issues)
-- [GitHub Discussions](https://github.com/your-username/gapstractai/discussions)
-- [Wiki](https://github.com/your-username/gapstractai/wiki)
+- [GitHub Issues](https://github.com/chinmayathakral/gapstractai/issues)
+- [GitHub Discussions](https://github.com/chinmayathakral/gapstractai/discussions)
+- [Wiki](https://github.com/chinmayathakral/gapstractai/wiki)
 
 ## 📄 License
 
