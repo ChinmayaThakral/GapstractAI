@@ -1,0 +1,165 @@
+enum UserStatus {
+    INVITED
+    VERIFIED
+}
+
+model AnalyticsLocalMetric {
+    id        String   @id @default(uuid())
+    name      String
+    value     String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt @default(now())
+    @@allow('all', true)
+}
+
+model User {
+    id                String             @id @default(uuid())
+    name              String?
+    email             String?            @unique
+    pictureUrl        String?            @default('https://i.imgur.com/ZdJSK3Y.jpeg')
+    tokenInvitation   String?
+
+    status            UserStatus         @default(VERIFIED)
+
+    // this is the role of the user for the application
+    globalRole        String             @default('USER')
+    password          String?            @password @omit
+    createdAt         DateTime           @default(now())
+    updatedAt         DateTime           @updatedAt @default(now())
+
+    organizationRoles OrganizationRole[]
+
+    papers            Paper[]            @relation("user")
+    annotations       Annotation[]       @relation("user")
+    researchGaps      ResearchGap[]      @relation("user")
+
+    @@auth()
+    @@allow("all", auth().id == this.id)
+    @@allow('all', auth().globalRole == 'ADMIN')
+
+    //we only allow that user to register if they don't create an admin role
+    @@allow("create", globalRole != 'ADMIN')
+    @@allow("read", true)
+}
+
+model Paper {
+
+    id                String        @id @default(uuid())
+    title             String
+    abstract          String?
+    pdfUrl            String?
+    status            String?
+    validationScore   Float?
+
+    organizationId    String
+    organization      Organization? @relation(fields: [organizationId], references: [id], name: "organization")
+    userId            String
+    user              User?         @relation(fields: [userId], references: [id], name: "user")
+
+    annotations       Annotation[]  @relation("paper")
+    researchGaps      ResearchGap[] @relation("paper")
+    algorithms        Algorithm[]   @relation("paper")
+    citationsAsSource Citation[]    @relation("source")
+    citationsAsTarget Citation[]    @relation("target")
+    createdAt         DateTime      @default(now())
+    updatedAt         DateTime      @updatedAt @default(now())
+    @@allow("all", true)
+}
+
+model Annotation {
+
+    id        String   @id @default(uuid())
+    content   String
+
+    paperId   String
+    paper     Paper?   @relation(fields: [paperId], references: [id], name: "paper")
+    userId    String
+    user      User?    @relation(fields: [userId], references: [id], name: "user")
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt @default(now())
+    @@allow("all", true)
+}
+
+model ResearchGap {
+
+    id          String   @id @default(uuid())
+    description String
+    hypothesis  String?
+    methodology String?
+
+    paperId     String
+    paper       Paper?   @relation(fields: [paperId], references: [id], name: "paper")
+    userId      String
+    user        User?    @relation(fields: [userId], references: [id], name: "user")
+
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt @default(now())
+    @@allow("all", true)
+}
+
+model Algorithm {
+
+    id          String   @id @default(uuid())
+    name        String
+    description String?
+    efficiency  String?
+
+    paperId     String
+    paper       Paper?   @relation(fields: [paperId], references: [id], name: "paper")
+
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt @default(now())
+    @@allow("all", true)
+}
+
+model Citation {
+
+    id        String   @id @default(uuid())
+    context   String?
+
+    sourceId  String
+    source    Paper?   @relation(fields: [sourceId], references: [id], name: "source")
+    targetId  String
+    target    Paper?   @relation(fields: [targetId], references: [id], name: "target")
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt @default(now())
+    @@allow("all", true)
+}
+
+model Organization {
+    id         String             @id @default(uuid())
+    name       String
+    pictureUrl String?            @default('https://i.imgur.com/BgkFiid.jpeg')
+
+    createdAt  DateTime           @default(now())
+    updatedAt  DateTime           @updatedAt @default(now())
+    roles      OrganizationRole[]
+
+    papers     Paper[]            @relation("organization")
+
+    @@allow('all', auth().globalRole == 'ADMIN')
+    @@allow('all', roles?[user == auth() && name == 'owner'])
+    @@allow('read', roles?[user == auth()])
+}
+
+model OrganizationRole {
+    id             String       @id @default(uuid())
+    name           String
+    createdAt      DateTime     @default(now())
+    updatedAt      DateTime     @updatedAt @default(now())
+
+    userId         String       @default(auth().id)
+    user           User         @relation(fields: [userId], references: [id])
+    organizationId String
+    organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+    @@allow('all', auth().globalRole == 'ADMIN')
+    @@allow('all', organization.roles?[user == auth() && name == 'owner'])
+    @@allow('create', organization.roles?[user == auth()] && name != 'owner')
+    @@allow('read', organization.roles?[user == auth()])
+    @@allow('delete', auth() == user)
+}
+
+  

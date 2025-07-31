@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: api
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5442:5432
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.11.0'
+        cache: 'npm'
+
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 8
+
+    - name: Install dependencies
+      run: pnpm install
+
+    - name: Setup environment
+      run: |
+        cp .env.example .env
+        echo "DATABASE_URL=postgresql://root:root@localhost:5442/api" >> .env
+        echo "SERVER_AUTHENTICATION_JWT_SECRET=test-jwt-secret" >> .env
+        echo "NODE_ENV=test" >> .env
+
+    - name: Generate Prisma client
+      run: pnpm run crud:sync
+
+    - name: Run database migrations
+      run: pnpm run database:sync:dev
+
+    - name: Run linting
+      run: pnpm run lint
+
+    - name: Run type checking
+      run: pnpm run check:code
+
+    - name: Run tests
+      run: pnpm run test
+      env:
+        DATABASE_URL: postgresql://root:root@localhost:5442/api
+
+    - name: Build application
+      run: pnpm run build
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.11.0'
+        cache: 'npm'
+
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        version: 8
+
+    - name: Install dependencies
+      run: pnpm install
+
+    - name: Run security audit
+      run: pnpm audit --audit-level moderate 
